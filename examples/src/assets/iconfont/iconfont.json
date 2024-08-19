@@ -1,0 +1,44 @@
+{
+  "id": "4201977",
+  "name": "绵阳应急系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "629339",
+      "name": "时间",
+      "font_class": "shijian",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "2815705",
+      "name": "查看",
+      "font_class": "chakan",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "36714201",
+      "name": "time_o",
+      "font_class": "shijian-fill",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "725069",
+      "name": "警告",
+      "font_class": "warn",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "28669265",
+      "name": "告警警告",
+      "font_class": "warn2",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    }
+  ]
+}
