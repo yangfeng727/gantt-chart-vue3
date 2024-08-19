@@ -22,8 +22,8 @@
       </span>
     </template>
     <template v-else>
-      <el-popover popper-class="ganTTTagTip" placement="right" width="206" v-model:visible="visibleTip" :show-arrow="false"
-        :offset="0">
+      <el-popover popper-class="ganTTTagTip" placement="right" :width="tipWdith" v-model:visible="visibleTip" :show-arrow="false"
+        :offset="0" :enterable="tipEnterable">
         <!-- tag tip 插槽 -->
         <slot name="tagTip" :tagData="tagItem">
           {{ tagItem.label }}
@@ -85,6 +85,16 @@ export default {
       type: Boolean,
       default: false
     },
+    // tooltip 宽度
+    tipWdith: {
+      type: [String,Number],
+      default: 206
+    },
+    // 鼠标是否可进入到 tag的 tooltip 中， 同 element plus tooltip enterable -- vue3 甘特图特有属性
+    tipEnterable:{
+      type: Boolean,
+      default: false // 默认不可以进入
+    },
   },
   data() {
     return {
@@ -100,7 +110,7 @@ export default {
   methods: {
     // 右键菜单
     contextmenuHandle(e) {
-      this.$emit('contextmenu', {
+      this.$emit('tagContextmenu', {
         e,
         tagItem: this.tagItem,
         // 其他参数直接回传，父组件不必重新计算
@@ -112,13 +122,13 @@ export default {
     },
     tagBlur() {
       // console.log('tagBlur 111')
-      this.$emit('blur')
+      this.$emit('tagBlur')
     },
     // 因为点击tag 会触发mousedown，mouseup，但不会触发mousemove，因此可以利用这点来区分点击还是拖动
     clickHandle(e) {
       if (this.moving || this.moved) return // 正在移动或者移动过，都不算作点击事件 
       // console.log('click', e)
-      this.$emit('click', {
+      this.$emit('tagClick', {
         e,
         tagItem: this.tagItem,
         // 其他参数直接回传，父组件不必重新计算

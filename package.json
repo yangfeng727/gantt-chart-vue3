@@ -1,8 +1,8 @@
 {
   "name": "gantt-chart-vue3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
-  "main": "dist/gantt-chart-vue.umd.min.js",
+  "main": "dist/gantt-chart-vue3.umd.cjs",
   "files": [
     "dist"
   ],
@@ -11,7 +11,7 @@
   "description": "vue3写的甘特图，支持高度自适应、tag拖拽、显示标记线、tag支持右键菜单、任务列支持显示右键菜单、支持只读模式、支持加减n天任务持续时间效果、支持tag避让效果【需结合后端数据刷新整个甘特图】",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yangfeng727/gantt-chart-vue"
+    "url": "https://github.com/yangfeng727/gantt-chart-vue3"
   },
   "keywords": [
     "vue",
@@ -24,6 +24,7 @@
     "甘特图"
   ],
   "dependencies": {
+    "element-plus": "^2.8.0",
     "vue": "^3.4.35"
   },
   "engines": {

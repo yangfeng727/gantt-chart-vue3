@@ -127,12 +127,12 @@
 
             <!-- 内部标签 -->
             <template v-for="item in tagList">
-              <tagItem :key="item.tagId" v-if="!item.hide" :tagItem="item" :tagMoveCallback="tagMove"
+              <tagItem :key="item.tagId" v-if="!item.hide" :tipWdith="tipWdith" :tagItem="item" :tagMoveCallback="tagMove"
                 @tagDragStart="tagDragStart" @changeEnd="tagChangeEnd"
                 :style="{ background: getLegendConfig(item).color || '#000000' }" :dragable="tagItemDragable(item)"
                 :closeTip="tagItemCloseTip(item)" :showOperateMark="tagHasOperateMenu(item)"
-                :showSelected="showSelected" @contextmenu="tagContextmenuHandle" @click="tagClickHandle"
-                @blur="tagblurHandle">
+                :showSelected="showSelected" @tagContextmenu="tagContextmenuHandle" @tagClick="tagClickHandle"
+                @tagBlur="tagblurHandle" :tipEnterable="tipEnterable">
 
                 <!-- tag hover显示的内容插槽 -->
                 <template #tagTip="{ tagData }">
@@ -221,7 +221,7 @@ let hasTagsDataMinRowHeight = 2 * rowPaddingTop + minSowTagRow * tagHeight + (mi
 hasTagsDataMinRowHeight = Math.max(...[hasTagsDataMinRowHeight, minRowHeight]) // 有数据行的最小高度
 
 export default {
-  name: 'gantt-chart-vue',
+  name: 'gantt-chart-vue3',
   // model: {
   //   prop: 'markLineTime',
   //   event: 'changeMarkLineTime'
@@ -514,6 +514,18 @@ export default {
     openTagMoveDodgeAnimate: {
       type: Boolean,
       default: false
+    },
+
+    // tooltip 宽度
+    tipWdith: {
+      type: [String,Number],
+      default: 206
+    },
+
+    // 鼠标是否可进入到 tag的 tooltip 中， 同 element plus tooltip enterable -- vue3 甘特图特有属性
+    tipEnterable:{
+      type: Boolean,
+      default: false // 默认不可以进入
     },
 
     // 样式部分 >>
@@ -1672,6 +1684,8 @@ export default {
 
     // tag 右键菜单回调
     tagContextmenuHandle(param) {
+      // console.log('tagcontextmenuHandle', param)
+
       // 关闭其他菜单
       this.closeAllMenu('tagContextmenuHandle')
       this.autoCloseTagMenu = false // 阻止tag失去焦点自动关闭tag menu
@@ -2711,7 +2725,7 @@ export default {
 
     // 关闭甘特图所有菜单
     closeAllMenu(eventHandle) {
-      console.log('触发函数:', eventHandle)
+      // console.log('触发函数:', eventHandle)
       // 关闭右键菜单
       this.rightMenu_close()
       this.taskMenu_close()

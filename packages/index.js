@@ -6,18 +6,18 @@
  * remark: 如果要分发gantt-chart-vue源码，需在本文件顶部保留此文件头信息！！
  */
 
-import ganttChartVue from './components/ganttChartVue/index.vue'
+import ganttChartVue3 from './components/ganttChartVue3/index.vue'
 
 const components = [
-    ganttChartVue
+    ganttChartVue3
 ]
 // 定义install方法
-const install = function (Vue) {
+const install = function (app) {
     if (install.installed) return
     install.installed = true
     // 遍历注册所有的组件
     components.forEach(component => {
-        Vue.component(component.name, component)
+        app.component(component.name, component)
     })
 }
 
@@ -27,7 +27,7 @@ const install = function (Vue) {
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue)
 }
-export default ganttChartVue
+export default ganttChartVue3
 export {
     install
 }
