@@ -2,9 +2,10 @@
   "name": "gantt-chart-vue3",
   "version": "1.0.3",
   "private": false,
-  "main": "dist/gantt-chart-vue3.umd.cjs",
+  "browser": "dist/gantt-chart-vue3.umd.cjs",
   "files": [
-    "dist"
+    "dist",
+    "docAssets"
   ],
   "author": "feng yang",
   "license": "MIT",
