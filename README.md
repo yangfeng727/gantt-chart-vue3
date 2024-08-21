@@ -1,4 +1,4 @@
-# gantt-chart-vue3 一个使用vue3.x开发的甘特图组件，是 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file) 升级版本，用于支持vue3.x
+# gantt-chart-vue3 一个使用vue3.x开发的甘特图组件
 [npm 地址](https://www.npmjs.com/package/gantt-chart-vue3?activeTab=readme)
 这个组件是我“被裁员期间”抽空给之前呆过的公司 **【重庆隆志科技有限公司】** 写的，大家**在二次开发的时候记得保留代码顶部的版权声明文件哦。**
 ```
@@ -12,7 +12,7 @@
 ```
 
 ## 目录说明
-packages下是 gantt-chart-vue3 组件源码  
+examples/packages/components 下是 gantt-chart-vue3 组件源码  
 examples下是demo代码，进入examples目录下执行 `npm i 和 npm run dev` 启动项目demo  
 
 ## 环境支持
@@ -22,7 +22,10 @@ node 大于 node 18.0.0
 vue2.x 请使用 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file)
 
 ## vue3.x 支持
-支持 vue3.x
+是 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file) 升级版本，用于支持 vue3.x
+
+## 特别说明
+如果你的项目没有用到 element plus，gantt-chart-vue3 也是可以正常使用的，做了打包优化，内部只会引入几个用到的 element plus 组件与样式。
 
 ## 功能
 * 1.甘特图精度显示到“分钟”。
@@ -53,9 +56,9 @@ vue2.x 请使用 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vu
 甘特图tag是以左上角点位置判断拖到的哪行。甘特图时间列宽度是根据 “甘特图总宽度 - paintLeft” 的剩余宽度均分得到的，每列设有最小列宽，计算的总宽度大于剩余宽度时将显示横向滚动条。
 
 ## 效果图
-![图1](./packages/imgs/img1.png)
-![图2](./packages/imgs/img2.png)
-![动态图](./packages/imgs/gif.gif)
+![图1](./docAssets/img1.png)
+![图2](./docAssets/img2.png)
+![动态图](./docAssets/gif.gif)
 
 ## 安装
 npm i gantt-chart-vue3 -S
@@ -64,36 +67,33 @@ npm i gantt-chart-vue3 -S
 
 ### 方式一：main.js中全局引入
 ```js
-import Vue from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
 
-// vue插件方式引入
-import * as ganttChartVue3 from 'gantt-chart-vue3'
-Vue.use(ganttChartVue3)
+// 引入 gantt-chart-vue3
+import "gantt-chart-vue3/dist/style.css";
+import * as ganttChartVue3 from "gantt-chart-vue3";
 
-Vue.config.productionTip = false
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+let app = createApp(App);
+
+app.use(ganttChartVue3);
+
+app.mount("#app");
 
 ```
 ### 方式三：组件内单独引入
-```js
-import ganttChartVue3 from 'gantt-chart-vue3'
-
-export default {
-  ...
-  components: {
-        ganttChartVue3
-  }
-  ...
-}
+```vue
+<script setup>
+  import "gantt-chart-vue3/dist/style.css";
+  import ganttChartVue3 from 'gantt-chart-vue3';
+</script>
 ```
 
 ### 基础使用
 ``` vue
 <template>
-  <div>
+  <div class="wrap">
     <ul class="legend-box">
       <li v-for="(item, index) in ganTT1Option.legend" :key="index">
         <span :style="{ backgroundColor: item.color }"></span>
@@ -101,167 +101,190 @@ export default {
       </li>
     </ul>
     <!-- 默认值测试 -->
-    <gantt-chart-vue3
-      ref="ganTT"
-      v-bind="ganTT1Option"
-      @tagDragEnd="tagDragEnd"
-    />
+    <gantt-chart-vue3 ref="ganTT" v-bind="ganTT1Option" @tagDragEnd="tagDragEnd" @tagMenuBtnClick="tagMenuBtnClick"
+      @taskMenuBtnClick="taskMenuBtnClick" />
   </div>
 </template>
 
-<script>
-import ganttChartVue3 from "gantt-chart-vue3";
-export default {
-  components: {
-    ganttChartVue3,
-  },
-  data() {
-    return {
-      ganTT1Option: {
-        readOnly: false, // 只读模式
-        title: "甘特图",
-        legend: [
+<script setup>
+import { ref, reactive, toRefs } from 'vue'
+
+import "gantt-chart-vue3/dist/style.css";
+import ganttChartVue3 from 'gantt-chart-vue3';
+
+const data = reactive({
+  ganTT1Option: {
+    readOnly: false, // 只读模式
+    title: "甘特图",
+    legend: [
+      {
+        label: "模型预排",
+        color: "#365ce5",
+        type: 1, // 用于判定同一网格行内具体所属行
+        dragable: true, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
+        closeTip: false, // 显示tag tip，也可以在rows中配置单个tag是否关闭提示
+        btnList: [
+          // 右键菜单按钮列表
           {
-            label: "模型预排",
-            color: "#365ce5",
-            type: 1, // 用于判定同一网格行内具体所属行
-            dragable: true, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
-            closeTip: false, // 显示tag tip，也可以在rows中配置单个tag是否关闭提示
-            // btnList: [
-            //   // 右键菜单按钮列表
-            //   {
-            //     label: "开启tag选中",
-            //     disabled: false,
-            //   },
-            //   {
-            //     label: "关闭tag选中",
-            //     disabled: false,
-            //   },
-            //   {
-            //     label: "tag前添加图标",
-            //     disabled: false,
-            //   },
-            // ],
+            label: "菜单1",
+            disabled: false,
           },
           {
-            label: "生产实绩",
-            color: "#39c236",
-            type: 2, // 用于判定同一网格行内具体所属行
-            dragable: true, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
-            closeTip: false, // 显示tag tip，也可以在rows中配置单个tag是否关闭提示
+            label: "菜单2",
+            disabled: false,
           },
           {
-            label: "计划停机1",
-            color: "#f5212d",
-            type: 3, // 用于判定同一网格行内具体所属行
-            closeTip: true, // 关闭此大类的tag tip，若tag自行设置有closeTip，则以tag 内的为准
-            dragable: false, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
-          },
-          {
-            label: "计划停机2",
-            color: "#ff9c1b",
-            type: 4, // 用于判定同一网格行内具体所属行
-            closeTip: false, // 关闭此大类的tag tip，若tag自行设置有closeTip，则以tag 内的为准
-            dragable: false, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
+            label: "菜单3",
+            disabled: false,
           },
         ],
-        rows: [
-          {
-            label: "项目A",
-            tags: [
-              {
-                startTime: "2023/12/06 02:10:00",
-                endTime: "2023/12/07 06:00:00",
-                label: "可拖拽，显示tip",
-                type: 1,
-              },
-              {
-                startTime: "2023/12/01 02:10:00",
-                endTime: "2023/12/03 06:10:00",
-                label: "生产实绩 tag",
-                type: 2,
-              },
-              {
-                startTime: "2023/12/01 02:10:00",
-                endTime: "2023/12/03 06:10:00",
-                label: "禁止拖拽，关闭tip --- 1",
-                type: 3,
-              },
-              {
-                startTime: "2023/12/03 08:00:00",
-                endTime: "2023/12/05 10:10:00",
-                label: "禁止拖拽，关闭tip --- 2",
-                type: 3,
-              },
-              {
-                startTime: "2023/12/01 02:10:00",
-                endTime: "2023/12/03 06:10:00",
-                label: "禁止拖拽，显示tip，计划停机2,完成度90%",
-                type: 4,
-              },
-            ],
-          },
-          {
-            label: "项目B",
-            tags: [
-              {
-                startTime: "2023/12/06 02:10:00",
-                endTime: "2023/12/07 06:10:00",
-                label: "模型预排1111,xx吨,完成度90%",
-                type: 1,
-              },
-            ],
-          },
-          {
-            label: "项目C",
-            tags: [],
-          },
-          {
-            label: "项目D",
-            tags: [
-              {
-                startTime: "2023/12/01 02:10:00",
-                endTime: "2023/12/03 06:10:00",
-                label: "xxxx,xx吨,完成度90%",
-                type: 1,
-              },
-            ],
-          },
-          {
-            label: "项目E",
-            tags: [],
-          },
-          {
-            label: "项目F",
-            tags: [],
-          },
-          {
-            label: "项目G",
-            disabled: true, // 禁止响应事件
-            tags: [],
-          },
-          {
-            label: "项目H",
-            tags: [],
-          },
-        ],
-        startDate: "2023/12/01",
-        dateDuration: 7,
       },
-    };
+      {
+        label: "生产实绩",
+        color: "#39c236",
+        type: 2, // 用于判定同一网格行内具体所属行
+        dragable: true, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
+        closeTip: false, // 显示tag tip，也可以在rows中配置单个tag是否关闭提示
+      },
+      {
+        label: "计划停机1",
+        color: "#f5212d",
+        type: 3, // 用于判定同一网格行内具体所属行
+        closeTip: true, // 关闭此大类的tag tip，若tag自行设置有closeTip，则以tag 内的为准
+        dragable: false, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
+      },
+      {
+        label: "计划停机2",
+        color: "#ff9c1b",
+        type: 4, // 用于判定同一网格行内具体所属行
+        closeTip: false, // 关闭此大类的tag tip，若tag自行设置有closeTip，则以tag 内的为准
+        dragable: false, // 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
+      },
+    ],
+    rows: [
+      {
+        label: "项目A",
+        tags: [
+          {
+            startTime: "2023/12/06 02:10:00",
+            endTime: "2023/12/07 06:00:00",
+            label: "可拖拽，显示tip",
+            type: 1,
+            preIcon: "iconfont icon-shijian", // tag前的图标
+          },
+          {
+            startTime: "2023/12/01 02:10:00",
+            endTime: "2023/12/03 06:10:00",
+            label: "生产实绩 tag",
+            type: 2,
+          },
+          {
+            startTime: "2023/12/01 02:10:00",
+            endTime: "2023/12/03 06:10:00",
+            label: "禁止拖拽，关闭tip --- 1",
+            type: 3,
+          },
+          {
+            startTime: "2023/12/03 08:00:00",
+            endTime: "2023/12/05 10:10:00",
+            label: "禁止拖拽，关闭tip --- 2",
+            type: 3,
+          },
+          {
+            startTime: "2023/12/01 02:10:00",
+            endTime: "2023/12/03 06:10:00",
+            label: "禁止拖拽，显示tip，计划停机2,完成度90%",
+            type: 4,
+          },
+        ],
+      },
+      {
+        label: "项目B",
+        tags: [
+          {
+            startTime: "2023/12/06 02:10:00",
+            endTime: "2023/12/07 06:10:00",
+            label: "模型预排1111,xx吨,完成度90%",
+            type: 1,
+          },
+        ],
+      },
+      {
+        label: "项目C",
+        tags: [],
+      },
+      {
+        label: "项目D",
+        tags: [
+          {
+            startTime: "2023/12/01 02:10:00",
+            endTime: "2023/12/03 06:10:00",
+            label: "xxxx,xx吨,完成度90%",
+            type: 1,
+          },
+        ],
+      },
+      {
+        label: "项目E",
+        tags: [],
+      },
+      {
+        label: "项目F",
+        tags: [],
+      },
+      {
+        label: "项目G",
+        disabled: true, // 禁止响应事件
+        tags: [],
+      },
+      {
+        label: "项目H",
+        tags: [],
+      },
+    ],
+    startDate: "2023/12/01",
+    dateDuration: 7,
+    // 任务列菜单 - 每行的菜单都一样，若想给某行单独设置不同的菜单，则给row 对应行赋值 taskMenuList
+    taskMenuList: [
+      {
+        label: "停产",
+        disabled: false, // 是否禁用
+      },
+      {
+        label: "启用",
+        disabled: false, // 是否禁用
+      },
+    ],
   },
-  methods: {
-    // tag拖拽结束
-    tagDragEnd(data) {
-      console.log("tag拖拽结束", data);
-      let rows = this.$refs["ganTT"].getRowsData();
-      console.log("甘特图数据：", rows);
-    },
-  },
-};
+})
+const {
+  ganTT1Option
+} = toRefs(data)
+const ganTT = ref()
+
+// tag拖拽结束
+const tagDragEnd = () => {
+  console.log("tag拖拽结束", data);
+  let rows = ganTT.value.getRowsData();
+  console.log("甘特图数据：", rows);
+}
+
+// tag 右键菜单点击
+const tagMenuBtnClick = (data) => {
+  console.log("tag 右键菜单点击", data);
+}
+
+const taskMenuBtnClick = (data) => {
+  console.log("左侧任务菜单点击", data);
+}
+
 </script>
 
 <style scoped>
+.wrap {
+  padding: 20px;
+}
+
 .legend-box {
   list-style: none;
   width: 100%;
@@ -270,12 +293,14 @@ export default {
   padding: 0;
   margin: 0;
 }
+
 .legend-box li {
   list-style: none;
   display: flex;
   align-items: center;
   margin-right: 10px;
 }
+
 .legend-box li span {
   display: block;
   width: 16px;
@@ -286,14 +311,14 @@ export default {
 </style>
 ```
 
-# 一、组件 props 属性值介绍，可查看源码 `packages/components/index.vue` 查看所有props
+# 一、组件 props 属性值介绍，可查看源码 `examples/packages/components/ganttChartVue3/index.vue` 查看所有props
 ## readOnly
 `boolean`，是否只读，最高优先级，为true会禁用所有编辑功能，如拖拽，右键菜单等
 ## disabledRowSilent
 `boolean`，禁用行是否不触发事件，tag不可拖动到禁用行，不触发右键菜单。 true：禁止拖入， false：可以拖入。【注：“禁用行” 是根据rows中每个item的 disabled 属性判断的，disabled:true 代表此行为禁用行，禁用行背景色为 disabledBgColor 的值】
 ## showSelected
 `boolean`，是否显示tag选中 - false 不会显示选中效果，true 显示选中效果【tag是否选中是通过rows中每个item的 selected 控制的】
-![tag选中效果.gif](./packages/imgs/tag选中效果.gif)
+![tag选中效果.gif](./docAssets/tag选中效果.gif)
 
 ## selfAdaptionGanTTHeight
 `boolean`，是否开启甘特图高度自适应：  
@@ -345,7 +370,7 @@ type Ilegend = Ilegendtype[]
 * dragable: 此类型tag是否可以拖动，也可以在rows中配置单个tag是否可以拖动
 * closeTip: 此类型是否显示tag tip，也可以在rows中配置单个tag是否关闭提示，true：不显示tip false：显示tip
 * btnList: tag上的右键菜单按钮列表，也可以设置是否禁用某个按钮，效果为:
-![右键菜单按钮](./packages/imgs/右键菜单按钮.png)  
+![右键菜单按钮](./docAssets/右键菜单按钮.png)  
 【注意：tag后面显示三个点，代表有操作菜单】
 
 ## title
@@ -354,7 +379,7 @@ type Ilegend = Ilegendtype[]
 `string`，初始显示的甘特图列开始时间，默认值：'2023/12/01'。重要！！！
 ## dateDuration
 `number`，任务持续时间 - 从开始时间计算，默认值：7。重要！！！
-![任务持续时间](./packages/imgs/任务持续时间.png)
+![任务持续时间](./docAssets/任务持续时间.png)
 ## decreaseDayNum
 `number`，除了dateDuration任务持续时间，当tag横向拖动到左边界时，可以往前几天时间。需求说明：
     如甘特图为7+2天，如果tag往左移出了，甘特图时间轴需要 - 1天；往右移出则 + 1 天，此时甘特图出现横向滚动条。
@@ -411,13 +436,13 @@ type IRows = IRowsItem[]
         }
     },
 ```
-![底部合计行](./packages/imgs/底部合计行.png)
+![底部合计行](./docAssets/底部合计行.png)
 ## showMarkLine
 `boolean`，是否显示 markLineTime 对应时间的标记线，注意：只读模式下标线功能未禁止，同样可以显示和标记。
 ## markLineTime
 `string`，标记线对应的时间，注意是完整时间，如：'2023/10/04 06:10:00'。标记线的功能为：点击甘特图内容区域，在点击的时间显示一条纵向线，后续可搭配 getTimePierceTags 方法获取所有被指定时间贯穿的tag。demo中有例子，感兴趣可以运行起来看看。
 如图：
-![贯穿tag的标记线.png](./packages/imgs/贯穿tag的标记线.png)
+![贯穿tag的标记线.png](./docAssets/贯穿tag的标记线.png)
 ## rightClickMenuList
 甘特图右键菜单里面的按钮，类型为：
 ```typescript
@@ -446,7 +471,7 @@ type IrightClickMenuList = Ibtn[]
     },
 ```
 效果图：
-![甘特图右键菜单](./packages/imgs/甘特图右键菜单.png)
+![甘特图右键菜单](./docAssets/甘特图右键菜单.png)
 
 ## taskMenuList
 任务列菜单 - 每行的菜单都一样，若想给某行单独设置不同的菜单，则给row 对应行赋值 `taskMenuList`，上面props.rows中有讲到过。  
@@ -477,15 +502,15 @@ type ItaskMenuList = Ibtn[]
     },
 ```
 效果图：
-![任务列菜单](./packages/imgs/任务列菜单.png)
-![任务列菜单2](./packages/imgs/任务列菜单2.png)
+![任务列菜单](./docAssets/任务列菜单.png)
+![任务列菜单2](./docAssets/任务列菜单2.png)
 ## dragTagEndShowTimeDialog
 `boolean`，tag拖拽结束是否显示时间选择框，默认：false。
-![拖拽结束显示时间框](./packages/imgs/拖拽结束显示时间框.gif)
+![拖拽结束显示时间框](./docAssets/拖拽结束显示时间框.gif)
 ## openTagMoveDodgeAnimate
 `boolean`，tag拖动的避让效果，只是单纯显示，原理: 修改translateX(x)，这样不会对原始数据造成影响，非必要不用开启此功能。  
 **【注意!!!：开启此功能后，将导致某些tag含有translateX 偏移，从而让甘特图表现异常-正确用法是每次拖动结束【比如调接口计算】，然后重新渲染整个甘特图】**
-![tag避让效果](./packages/imgs/tag避让效果.gif)
+![tag避让效果](./docAssets/tag避让效果.gif)
 
 ## tipWdith
 `string | number`，tooltip 宽度，默认206px。
@@ -575,7 +600,7 @@ interface IParams{
 }
 $emit('tagMenuBtnClick', params: IParams)
 ```
-![右键菜单按钮](./packages/imgs/右键菜单按钮.png)
+![右键菜单按钮](./docAssets/右键菜单按钮.png)
 
 ## **changeMarkLineClick** showMarkLine 为 true 时，点击甘特图触发该事件。【注意：左侧任务栏不会触发此事件。】
 ```typescript
@@ -715,3 +740,23 @@ interface IGanttChartVueInstance{
 ### 从 vue2.x 升级到 vue3.x 版本
 1.将 element-ui 改为了 element-plus，其中 Popover 修改了下，element-ui 版本的 Popover 不能直接拿来使用。  
 2.源码内部 tag 事件名称修改，如在 vue2.x 版本的 click 改为 tagClick，contextmenu 改为tagContextmenu，blur 改为 tagBlur。因为发现取原生事件名称将导致事件重复触发，其中一次由原生事件触发。
+
+### dayjs 模块
+element plus 内部包含了 dayjs 模块，因而不用单独引入。
+
+### 打包发布时分离 element plus
+因为vite 打包提供了 rollupOptions.external 可以分离 element plus，这样编译后的体积更小。在发布后的 package.json 里声明了的 element plus 的依赖，因此无论用户的项目是否有安装 element plus，都可以保证甘特图正常使用。
+
+### 样式问题
+甘特图样式被分离出去了，因此使用甘特图的时候要单独再引入样式。  
+分离 element plus 后甘特图内按需导入用到的 element plus 组件与其样式。  
+```js
+// element-plus 导入组件样式
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/button/style/css'
+import 'element-plus/es/components/dialog/style/css'
+import 'element-plus/es/components/date-picker/style/css'
+import { ElMessage, ElButton, ElDialog, ElDatePicker } from 'element-plus'
+```
+后改为 element plus 官网提到的 unplugin-element-plus 插件，用于替代上面手动导入样式的写法，这种方式也避免了 element plus 后续升级了如果目录变化了，样式加载不出来的情况。  
+需要注意的是**目录修改了，之前 packages 目录是在外面的，现在需要挪到 examples 目录里面**，因为 import element-plus 样式的时候找不到文件，是 vite 框架问题？element-plus 组件可以访问，为啥样式就不行，留到后面再找下原因？使用 unplugin-element-plus 插件也要求 packages 目录在examples 目录里面。

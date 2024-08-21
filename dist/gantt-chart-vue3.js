@@ -194,7 +194,7 @@ function fe(e, t, i, l, s, a) {
     i.showOperateMark ? (T(), p("i", ge)) : G("", !0)
   ]);
 }
-const de = /* @__PURE__ */ E(oe, [["render", fe], ["__scopeId", "data-v-f5ae5a42"]]), ue = {
+const de = /* @__PURE__ */ E(oe, [["render", fe], ["__scopeId", "data-v-66e88bcf"]]), ue = {
   name: "tagItem",
   components: {
     // element ui
@@ -232,6 +232,11 @@ const de = /* @__PURE__ */ E(oe, [["render", fe], ["__scopeId", "data-v-f5ae5a42
     showSelected: {
       type: Boolean,
       default: !1
+    },
+    // tooltip 宽度
+    tipWdith: {
+      type: [String, Number],
+      default: 206
     },
     // 鼠标是否可进入到 tag的 tooltip 中， 同 element plus tooltip enterable -- vue3 甘特图特有属性
     tipEnterable: {
@@ -382,7 +387,7 @@ function ce(e, t, i, l, s, a) {
       key: 1,
       "popper-class": "ganTTTagTip",
       placement: "right",
-      width: "206",
+      width: i.tipWdith,
       visible: s.visibleTip,
       "onUpdate:visible": t[3] || (t[3] = (r) => s.visibleTip = r),
       "show-arrow": !1,
@@ -408,10 +413,10 @@ function ce(e, t, i, l, s, a) {
         ], !0)
       ]),
       _: 3
-    }, 8, ["visible", "enterable"]))
+    }, 8, ["width", "visible", "enterable"]))
   ], 38);
 }
-const me = /* @__PURE__ */ E(ue, [["render", ce], ["__scopeId", "data-v-715240a4"]]), Te = {
+const me = /* @__PURE__ */ E(ue, [["render", ce], ["__scopeId", "data-v-dd4eeaa7"]]), Te = {
   name: "yTimeLine",
   props: {
     visible: {
@@ -458,7 +463,7 @@ function pe(e, t, i, l, s, a) {
     [X, i.visible]
   ]);
 }
-const we = /* @__PURE__ */ E(Te, [["render", pe], ["__scopeId", "data-v-2ffb3469"]]);
+const we = /* @__PURE__ */ E(Te, [["render", pe], ["__scopeId", "data-v-cab0e786"]]);
 let S;
 const O = 4, ye = 28, _ = 28, V = 5, De = 100;
 let Y = 2;
@@ -753,6 +758,11 @@ const be = {
     openTagMoveDodgeAnimate: {
       type: Boolean,
       default: !1
+    },
+    // tooltip 宽度
+    tipWdith: {
+      type: [String, Number],
+      default: 206
     },
     // 鼠标是否可进入到 tag的 tooltip 中， 同 element plus tooltip enterable -- vue3 甘特图特有属性
     tipEnterable: {
@@ -2310,6 +2320,7 @@ function Ve(e, t, i, l, s, a) {
             (T(!0), p(M, null, R(s.tagList, (n) => (T(), p(M, null, [
               n.hide ? G("", !0) : (T(), Q(f, {
                 key: n.tagId,
+                tipWdith: i.tipWdith,
                 tagItem: n,
                 tagMoveCallback: a.tagMove,
                 onTagDragStart: a.tagDragStart,
@@ -2328,7 +2339,7 @@ function Ve(e, t, i, l, s, a) {
                   J(e.$slots, "tagTip", { tagData: u }, void 0, !0)
                 ]),
                 _: 2
-              }, 1032, ["tagItem", "tagMoveCallback", "onTagDragStart", "onChangeEnd", "style", "dragable", "closeTip", "showOperateMark", "showSelected", "onTagContextmenu", "onTagClick", "onTagBlur", "tipEnterable"]))
+              }, 1032, ["tipWdith", "tagItem", "tagMoveCallback", "onTagDragStart", "onChangeEnd", "style", "dragable", "closeTip", "showOperateMark", "showSelected", "onTagContextmenu", "onTagClick", "onTagBlur", "tipEnterable"]))
             ], 64))), 256))
           ], 512),
           c("div", Ye, [
@@ -2428,7 +2439,7 @@ function Ve(e, t, i, l, s, a) {
     }, 8, ["modelValue"])
   ]);
 }
-const Pe = /* @__PURE__ */ E(be, [["render", Ve], ["__scopeId", "data-v-cc2e38d9"]]), je = [
+const Pe = /* @__PURE__ */ E(be, [["render", Ve], ["__scopeId", "data-v-f58ae14c"]]), je = [
   Pe
 ], F = function(e) {
   F.installed || (F.installed = !0, je.forEach((t) => {

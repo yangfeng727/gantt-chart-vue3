@@ -26,7 +26,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .label-yc {
   width: 100%;

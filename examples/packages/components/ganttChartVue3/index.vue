@@ -127,8 +127,8 @@
 
             <!-- 内部标签 -->
             <template v-for="item in tagList">
-              <tagItem :key="item.tagId" v-if="!item.hide" :tipWdith="tipWdith" :tagItem="item" :tagMoveCallback="tagMove"
-                @tagDragStart="tagDragStart" @changeEnd="tagChangeEnd"
+              <tagItem :key="item.tagId" v-if="!item.hide" :tipWdith="tipWdith" :tagItem="item"
+                :tagMoveCallback="tagMove" @tagDragStart="tagDragStart" @changeEnd="tagChangeEnd"
                 :style="{ background: getLegendConfig(item).color || '#000000' }" :dragable="tagItemDragable(item)"
                 :closeTip="tagItemCloseTip(item)" :showOperateMark="tagHasOperateMenu(item)"
                 :showSelected="showSelected" @tagContextmenu="tagContextmenuHandle" @tagClick="tagClickHandle"
@@ -185,8 +185,7 @@
     <el-dialog title="时间选择" v-model="tagTimeDialog.visible" width="450px" :close-on-click-modal="false">
       <div>
         <el-date-picker v-model="tagTimeDialog.timeRange" type="datetimerange" :picker-options="pickerOptions"
-          range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"
-          value-format="yyyy/MM/dd HH:mm:ss">
+          range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy/MM/dd HH:mm:ss">
         </el-date-picker>
       </div>
       <template #footer>
@@ -200,8 +199,13 @@
   </div>
 </template>
 <script>
-
+// element-plus 导入组件样式
+// import 'element-plus/es/components/message/style/css'
+// import 'element-plus/es/components/button/style/css'
+// import 'element-plus/es/components/dialog/style/css'
+// import 'element-plus/es/components/date-picker/style/css'
 import { ElMessage, ElButton, ElDialog, ElDatePicker } from 'element-plus'
+
 import { utils, moveInBoundary, tagIsTouchDisabledRow, uuid, cloneObj } from './index'
 import tagItem from './tagItem.vue'
 import yTimeLine from './yTimeLine.vue'
@@ -518,12 +522,12 @@ export default {
 
     // tooltip 宽度
     tipWdith: {
-      type: [String,Number],
+      type: [String, Number],
       default: 206
     },
 
     // 鼠标是否可进入到 tag的 tooltip 中， 同 element plus tooltip enterable -- vue3 甘特图特有属性
-    tipEnterable:{
+    tipEnterable: {
       type: Boolean,
       default: false // 默认不可以进入
     },

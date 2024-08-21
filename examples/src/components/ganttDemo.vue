@@ -61,8 +61,9 @@
   </div>
 </template>
 <script>
+
 import { cloneObj } from "./index";
-import ganttChartVue from "../../../packages/components/ganttChartVue3/index.vue"; // 本地调试
+import ganttChartVue from "../../packages/components/ganttChartVue3/index.vue"; // 本地调试
 // import ganttChartVue from '../../../dist/gantt-chart-vue.umd.min.js' // 测试编译后的文件
 
 export default {

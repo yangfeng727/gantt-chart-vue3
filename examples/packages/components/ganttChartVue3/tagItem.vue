@@ -42,7 +42,10 @@
 </template>
 
 <script>
+// element-plus 导入组件样式
+// import 'element-plus/es/components/popover/style/css'
 import { ElPopover } from 'element-plus'
+
 import { cloneObj, findLocateParentNode, utils } from './index'
 import tagItemLabel from './tagItemLabel.vue'
 export default {
@@ -259,7 +262,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 // 画布内tag
 .tagItem {
