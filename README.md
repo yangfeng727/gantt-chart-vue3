@@ -22,7 +22,7 @@ node 大于 node 18.0.0
 vue2.x 请使用 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file)
 
 ## vue3.x 支持
-是 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file) 升级版本，用于支持 vue3.x
+支持vue3.x，gantt-chart-vue3 是 [gantt-chart-vue](https://github.com/yangfeng727/gantt-chart-vue?tab=readme-ov-file) 的升级版本，用于支持 vue3.x。
 
 ## 特别说明
 如果你的项目没有用到 element plus，gantt-chart-vue3 也是可以正常使用的，做了打包优化，内部只会引入几个用到的 element plus 组件与样式。
@@ -82,7 +82,7 @@ app.use(ganttChartVue3);
 app.mount("#app");
 
 ```
-### 方式三：组件内单独引入
+### 方式二：组件内单独引入
 ```vue
 <script setup>
   import "gantt-chart-vue3/dist/style.css";
